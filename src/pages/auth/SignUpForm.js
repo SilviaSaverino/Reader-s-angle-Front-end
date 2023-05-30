@@ -6,22 +6,29 @@ import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
 
 import { Form, Button, Image, Col, Row, Container } from "react-bootstrap";
+import axios from "axios";
 
 const SignUpForm = () => {
   const [signUpData, setSignUpData] = useState({
-    username: '',
-    pw1: '',
-    pw2: '',
-  })
+    username: "",
+    pw1: "",
+    pw2: "",
+  });
   const { username, pw1, pw2 } = signUpData;
 
   const handleChange = (event) => {
     setSignUpData({
       ...signUpData,
-      [event.target.name]: event.target.value
-    })
-  }
+      [event.target.name]: event.target.value,
+    });
+  };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.post("/dj-rest-auth/registration/", signUpData);
+    } catch (err) {}
+  };
 
   return (
     <Row className={styles.Row}>
@@ -34,7 +41,7 @@ const SignUpForm = () => {
       <Col className="my-auto py-2 p-md-2" md={6}>
         <Container className={`${appStyles.Content} p-4 `}>
           <h1 className={styles.Header}>sign up</h1>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
               <Form.Label className="d-none">Username:</Form.Label>
               <Form.Control
@@ -68,7 +75,11 @@ const SignUpForm = () => {
                 onChange={handleChange}
               />
             </Form.Group>
-            <Button className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Dull}`} variant="primary" type="submit">
+            <Button
+              className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Dull}`}
+              variant="primary"
+              type="submit"
+            >
               Sign Up
             </Button>
           </Form>

@@ -5,19 +5,21 @@ import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
 
-import { Form, Button, Image, Col, Row, Container } from "react-bootstrap";
+import { Form, Button, Image, Col, Row, Container, Alert } from "react-bootstrap";
 import axios from "axios";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const SignUpForm = () => {
   const [signUpData, setSignUpData] = useState({
     username: "",
-    pw1: "",
-    pw2: "",
+    password1: "",
+    password2: "",
   });
-  const { username, pw1, pw2 } = signUpData;
+  const { username, password1, password2 } = signUpData;
 
   const history = useHistory;
+
+  const [errors, setErrors] = useState({});
 
   const handleChange = (event) => {
     setSignUpData({
@@ -31,7 +33,9 @@ const SignUpForm = () => {
     try {
       await axios.post("/dj-rest-auth/registration/", signUpData);
       history.push('/signin')
-    } catch (err) {}
+    } catch (err) {
+      setErrors(err.response?.data)
+    }
   };
 
   return (
@@ -57,28 +61,37 @@ const SignUpForm = () => {
                 onChange={handleChange}
               />
             </Form.Group>
+            {errors.username?.map((message, idx) =>
+              <Alert variant="warning" key={idx} className="text-center">{message}</Alert>
+            )}
             <Form.Group controlId="formBasicPassword">
               <Form.Label className="d-none">Password:</Form.Label>
               <Form.Control
                 className={styles.Input}
                 type="password"
                 placeholder="Choose a password"
-                name="pw1"
-                value={pw1}
+                name="password1"
+                value={password1}
                 onChange={handleChange}
               />
             </Form.Group>
+            {errors.password1?.map((message, idx) =>
+              <Alert variant="warning" key={idx} className="text-center">{message}</Alert>
+            )}
             <Form.Group controlId="formBasicPassword">
               <Form.Label className="d-none">Confirm Password:</Form.Label>
               <Form.Control
                 className={styles.Input}
                 type="password"
                 placeholder="Confirm your password"
-                name="pw2"
-                value={pw2}
+                name="password2"
+                value={password2}
                 onChange={handleChange}
               />
             </Form.Group>
+            {errors.password2?.map((message, idx) =>
+              <Alert variant="warning" key={idx} className="text-center">{message}</Alert>
+            )}
             <Button
               className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Dull}`}
               variant="primary"
@@ -86,6 +99,10 @@ const SignUpForm = () => {
             >
               Sign Up
             </Button>
+            {errors.non_field_errors?.map((message, idx) =>
+              <Alert variant="warning" key={idx} className="mt-3 text-center">{message}</Alert>
+            )}
+
           </Form>
         </Container>
         <Container className={`mt-3 ${appStyles.Content}`}>

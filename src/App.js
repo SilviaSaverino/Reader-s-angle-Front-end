@@ -6,14 +6,15 @@ import {Route, Switch} from 'react-router-dom';
 function App() {
   return (
     <div className={styles.App}>
-       <NavBar />
-       <Container className={styles.Main}>
+      <NavBar />
+      <Container className={styles.Main}>
         <Switch>
-          <Route exact path="/" render={() => <h1>Home</h1>} />
-          <Route exact path="/signin" render={() => <h1>Sign In</h1>} />
-          <Route exact path="/signup" render={() => <h1>Sign Up</h1>} />
+          <Route exact path="/" render={() => <h1>Home page</h1>} />
+          <Route exact path="/signin" render={() => <h1>Sign in</h1>} />
+          <Route exact path="/signup" render={() => <h1>Sign up</h1>} />
+          <Route render={() => <p>Page not found!</p>} />
         </Switch>
-       </Container>
+      </Container>
     </div>
   );
 }

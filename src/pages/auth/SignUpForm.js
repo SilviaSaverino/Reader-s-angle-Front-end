@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import signupImage from "../../assets/signup.png";
 import styles from "../../styles/SignInUpForm.module.css";
@@ -8,6 +8,21 @@ import appStyles from "../../App.module.css";
 import { Form, Button, Image, Col, Row, Container } from "react-bootstrap";
 
 const SignUpForm = () => {
+  const [signUpData, setSignUpData] = useState({
+    username: '',
+    pw1: '',
+    pw2: '',
+  })
+  const { username, pw1, pw2 } = signUpData;
+
+  const handleChange = (event) => {
+    setSignUpData({
+      ...signUpData,
+      [event.target.name]: event.target.value
+    })
+  }
+
+
   return (
     <Row className={styles.Row}>
       <Col
@@ -24,28 +39,33 @@ const SignUpForm = () => {
               <Form.Label className="d-none">Username:</Form.Label>
               <Form.Control
                 className={styles.Input}
-                type="username"
+                type="text"
                 placeholder="Choose your username"
                 name="username"
+                value={username}
+                onChange={handleChange}
               />
             </Form.Group>
-
             <Form.Group controlId="formBasicPassword">
               <Form.Label className="d-none">Password:</Form.Label>
               <Form.Control
                 className={styles.Input}
-                type="password1"
+                type="password"
                 placeholder="Choose a password"
                 name="pw1"
+                value={pw1}
+                onChange={handleChange}
               />
             </Form.Group>
             <Form.Group controlId="formBasicPassword">
               <Form.Label className="d-none">Confirm Password:</Form.Label>
               <Form.Control
                 className={styles.Input}
-                type="password2"
+                type="password"
                 placeholder="Confirm your password"
                 name="pw2"
+                value={pw2}
+                onChange={handleChange}
               />
             </Form.Group>
             <Button className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Dull}`} variant="primary" type="submit">

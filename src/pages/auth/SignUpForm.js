@@ -7,6 +7,7 @@ import appStyles from "../../App.module.css";
 
 import { Form, Button, Image, Col, Row, Container } from "react-bootstrap";
 import axios from "axios";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const SignUpForm = () => {
   const [signUpData, setSignUpData] = useState({
@@ -15,6 +16,8 @@ const SignUpForm = () => {
     pw2: "",
   });
   const { username, pw1, pw2 } = signUpData;
+
+  const history = useHistory;
 
   const handleChange = (event) => {
     setSignUpData({
@@ -27,6 +30,7 @@ const SignUpForm = () => {
     event.preventDefault();
     try {
       await axios.post("/dj-rest-auth/registration/", signUpData);
+      history.push('/signin')
     } catch (err) {}
   };
 
